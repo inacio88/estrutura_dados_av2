@@ -9,8 +9,7 @@ typedef struct tema{
     struct tema *anterior;
 }*tipoLista;
 
-//Seja uma lista encadeada cujos registros possuam informação do tipo inteiro. Escreva
-//um programa que ordena a lista em ordem crescente em relação à informação.
+
 
 
 tipoLista excluirMeio(char nome[80], tipoLista lista);
@@ -94,39 +93,56 @@ tipoLista excluirMeio(char nome[80], tipoLista lista){
     if (lista == NULL){
         printf("\nLista vazia\n");
     }
-    else if (lista->anterior == NULL && lista->proximo == NULL){
-        free(lista);
-        lista = NULL;
-        return lista;
-    }
     else{
-
         tipoLista listaAux = lista;
-        tipoLista listaAux2;
-        while (listaAux != NULL){
+        tipoLista listaAux2 = NULL;
+
+        while ( listaAux != NULL){
             
-            
-            if ((strcmp(nome, listaAux->nome)) == 0){
-                    printf("\n ENTROUU 1 \n");
-                    listaAux2 = listaAux->anterior;
-                    listaAux2->proximo = listaAux->proximo;
-                    listaAux = listaAux->proximo;
-                    listaAux->anterior = listaAux2;
-                    
-                    printf("\n ENTROUU 2 \n");
+            if ( (strcmp(nome, listaAux->nome)) == 0 ){
+                printf("\n sim igual \n");
+                if ( (listaAux->anterior == NULL) && (listaAux->proximo == NULL)){
+                    free(lista);
+                    lista = NULL;
                     return lista;
+                }
+                if ( (listaAux->anterior != NULL) && (listaAux->proximo != NULL)){
+                    //No meio
+                    printf("\n ---meio---- \n");
+                    listaAux2 = listaAux->anterior;
+                    listaAux = listaAux->proximo;
+                    listaAux2->proximo = listaAux;
+                    listaAux->anterior = listaAux2;
+                }
+                else if (listaAux->anterior == NULL){
+                    //esquerda
+                    printf("\n -----esquerda \n");
+                    listaAux = listaAux->proximo;
+                    listaAux->anterior = NULL;
+                    return listaAux;
+                }
+                else{
+                    printf("\n direita----- \n");
+                    listaAux = listaAux->anterior;
+                    listaAux->proximo = NULL;
+                    return lista;
+                }
+                
+                
+
+            }
+            else{
+                printf("\n NAO igual \n");
             }
             
-            listaAux = listaAux->proximo;
             
+
+            listaAux = listaAux->proximo;
         }
-        free(listaAux);
-        listaAux = NULL;
-        free(listaAux2);
-        listaAux2 = NULL;
-        return lista;
         
+
     }
+    return lista;
 
 }
 
@@ -236,7 +252,7 @@ int main(){
         printf("\n 5- exibir lista \n");
         printf("\n 6- pesquisar \n");
         printf("\n 7- excluir meio \n");
-        printf("\n 8- Organizar \n");
+  
         printf("\n 0- sair \n");
         printf("Digite: ");
         scanf("%d", &op);
@@ -280,8 +296,8 @@ int main(){
         case 7:
             printf("Excluir no meio: \n");
             printf("Nome: \n");
-            getchar();
             scanf("%[^\n]", nome);
+            getchar();
             lista =  excluirMeio(nome, lista);
             break;
        
